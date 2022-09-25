@@ -22,11 +22,27 @@ interface TurbineAPI {
 function App() {
   const [error, setError] = useState(false);
   const [turbines, setTurbines] = useState<Turbine[]>([]);
+  const [showOnlyErrors, setShowOnlyErrors] = useState(false);
+  const [unfilteredTurbines, setUnfilteredTurbines] = useState<Turbine[]>([]);
 
   function errorHandler(error: any) {
     console.error(error);
     setError(true);
   }
+
+  function toggle(value: boolean): boolean {
+    return !value;
+  }
+
+  useEffect(() => {
+    const turbinesToShow = showOnlyErrors
+      ? unfilteredTurbines.filter(
+          (turbine) => turbine.critical || turbine.warning
+        )
+      : unfilteredTurbines;
+
+    setTurbines(turbinesToShow);
+  }, [showOnlyErrors, unfilteredTurbines]);
 
   useEffect(() => {
     fetch('https://run.mocky.io/v3/6a13fe7e-840c-4d82-b58f-c737139f0e55')
@@ -60,7 +76,7 @@ function App() {
               }
             });
 
-            setTurbines(turbineList);
+            setUnfilteredTurbines(turbineList);
           })
           .catch((error) => errorHandler(error));
       })
@@ -77,6 +93,18 @@ function App() {
 
   return (
     <div className="app">
+      <div className="filters">
+        Filters:
+        <label>
+          <input
+            type="checkbox"
+            name="checkbox"
+            checked={showOnlyErrors}
+            onChange={() => setShowOnlyErrors(toggle)}
+          />
+          Show alerts only
+        </label>
+      </div>
       <TurbineList turbines={turbines} />
     </div>
   );
