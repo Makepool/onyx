@@ -1,0 +1,30 @@
+.turbine {
+  max-width: 500px;
+  border: 3px solid #fff;
+  display: flex;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  box-shadow: 3px 3px 9px rgb(0 0 0 / 0.2);
+  background-color: #fff;
+}
+
+.turbine__name {
+  flex: 1;
+}
+
+.turbine__critical {
+  flex: 0 0 140px;
+}
+
+.turbine--warning {
+  border: 3px solid rgb(255, 255, 0);
+  background-color: rgb(255, 255, 176);
+}
+
+// need this class to be last so that when a turbine has a warning and a critical alarm the critial class wins
+// this might also be a legitimate use case for !important
+.turbine--critical {
+  border: 3px solid red;
+  background-color: rgb(255, 176, 176);
+}

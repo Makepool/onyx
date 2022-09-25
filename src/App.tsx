@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.scss';
+import { TurbineList } from './TurbineList';
 
 enum Alert {
   Warning = 1,
@@ -70,15 +71,13 @@ function App() {
     return <div>There has been an error.</div>;
   }
 
+  if (turbines.length === 0) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="App">
-      {turbines.map((turbine) => {
-        return (
-          <div>
-            {turbine.turbine}-{turbine.critical}-{turbine.warning}
-          </div>
-        );
-      })}
+    <div className="app">
+      <TurbineList turbines={turbines} />
     </div>
   );
 }
